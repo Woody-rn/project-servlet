@@ -63,7 +63,7 @@
         const response = await fetch('/restart', {
             method: 'POST',
             headers: {
-                'contentType': 'application/json;charset=UTF-8'
+                'Content-Type': 'application/json;charset=UTF-8'
             }
         });
         if (response.ok) {
