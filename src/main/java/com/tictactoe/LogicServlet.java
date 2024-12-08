@@ -28,7 +28,7 @@ public class LogicServlet extends HttpServlet {
             return;
         }
 
-        int emptyFieldIndex = field.getEmptyFieldIndex();
+        int emptyFieldIndex = field.botMove();
         if (emptyFieldIndex >= 0) {
             field.getField().put(emptyFieldIndex, Sign.NOUGHT);
             if (checkWin(resp, currentSession, field)) {

@@ -9,7 +9,10 @@
     <link href="static/main.css" rel="stylesheet">
 </head>
 <body>
-<h1>Tic-Tac-Toe</h1>
+<h1>
+    Tic-Tac-Toe
+    <span class="smart">smart</span>
+</h1>
 
 <table>
     <tr>

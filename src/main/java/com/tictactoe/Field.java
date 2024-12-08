@@ -25,7 +25,7 @@ public class Field {
         return field;
     }
 
-    public int getEmptyFieldIndex() {
+    private int getEmptyFieldIndex() {
         return field.entrySet().stream()
                 .filter(e -> e.getValue() == Sign.EMPTY)
                 .map(Map.Entry::getKey)
@@ -53,10 +53,39 @@ public class Field {
 
         for (List<Integer> winPossibility : winPossibilities) {
             if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1))
-                && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))) {
+                    && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))
+                    && field.get(winPossibility.get(0)) != Sign.EMPTY) {
                 return field.get(winPossibility.get(0));
             }
         }
         return Sign.EMPTY;
+    }
+
+    public int botMove() {
+        Sign bot = Sign.NOUGHT;
+        Sign player = Sign.CROSS;
+        int winMove = findWinMove(bot);
+        if (winMove != -1) {
+            return winMove;
+        }
+        int blockMoveEnemy = findWinMove(player);
+        if (blockMoveEnemy != -1) {
+            return blockMoveEnemy;
+        }
+        return getEmptyFieldIndex();
+    }
+
+    private int findWinMove(Sign user) {
+        for (int i = 0; i < field.size(); i++) {
+            if (field.get(i) == Sign.EMPTY) {
+                field.put(i, user);
+                if (checkWin() == user) {
+                    field.put(i, Sign.EMPTY);
+                    return i;
+                }
+                field.put(i, Sign.EMPTY);
+            }
+        }
+        return -1;
     }
 }
