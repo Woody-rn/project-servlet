@@ -7,6 +7,16 @@ import java.util.stream.Collectors;
 
 public class Field {
     private final Map<Integer, Sign> field;
+    private final List<List<Integer>> winPossibilities = List.of(
+            List.of(0, 1, 2),
+            List.of(3, 4, 5),
+            List.of(6, 7, 8),
+            List.of(0, 3, 6),
+            List.of(1, 4, 7),
+            List.of(2, 5, 8),
+            List.of(0, 4, 8),
+            List.of(2, 4, 6)
+    );
 
     public Field() {
         field = new HashMap<>();
@@ -39,18 +49,18 @@ public class Field {
                 .collect(Collectors.toList());
     }
 
-    public Sign checkWin() {
-        List<List<Integer>> winPossibilities = List.of(
-                List.of(0, 1, 2),
-                List.of(3, 4, 5),
-                List.of(6, 7, 8),
-                List.of(0, 3, 6),
-                List.of(1, 4, 7),
-                List.of(2, 5, 8),
-                List.of(0, 4, 8),
-                List.of(2, 4, 6)
-        );
+    public List<Integer> getListIndexWinCell(){
+        for (List<Integer> winPossibility : winPossibilities) {
+            if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1))
+                    && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))
+                    && field.get(winPossibility.get(0)) != Sign.EMPTY) {
+                return winPossibility;
+            }
+        }
+        throw new RuntimeException();
+    }
 
+    public Sign checkWin() {
         for (List<Integer> winPossibility : winPossibilities) {
             if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1))
                     && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))

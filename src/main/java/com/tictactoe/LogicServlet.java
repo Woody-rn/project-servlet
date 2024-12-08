@@ -67,8 +67,10 @@ public class LogicServlet extends HttpServlet {
         Sign winner = field.checkWin();
         if (Sign.CROSS == winner || Sign.NOUGHT == winner) {
             List<Sign> data = field.getFieldData();
+            List<Integer> listIndexWinCell = field.getListIndexWinCell();
             session.setAttribute("winner", winner);
             session.setAttribute("data", data);
+            session.setAttribute("dataWinCell", listIndexWinCell);
             try {
                 response.sendRedirect("/index.jsp");
             } catch (IOException e) {

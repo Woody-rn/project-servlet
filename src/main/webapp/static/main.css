@@ -18,7 +18,7 @@ h1 {
     text-shadow: 3px 3px 3px var(--color-back-shadow);
 }
 
-p {
+.game-over {
     font-size: 50px;
     text-align: center;
     color: snow;
@@ -117,4 +117,8 @@ button:hover {
 
 button:active {
     box-shadow: inset 0 0 8px 0 black;
+}
+
+.win-cell {
+    background-color: var(--color-back-shadow);
 }
