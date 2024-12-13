@@ -11,15 +11,16 @@ body {
 }
 
 h1 {
-    padding-bottom: 20px;
-    font-size: 50px;
+    padding: 10px;
+    margin: 0;
+    font-size: 40px;
     text-align: center;
     color: var(--color-symbol);
     text-shadow: 3px 3px 3px var(--color-back-shadow);
 }
 
 .game-over {
-    font-size: 50px;
+    font-size: 40px;
     text-align: center;
     color: snow;
     animation: bounce 1s infinite;
@@ -40,7 +41,7 @@ h1 {
 
 table {
     position: relative;
-    margin: 40px auto 20px;
+    margin: 20px auto 20px;
     border-radius: 15px;
     box-shadow: 0 0 20px 10px var(--color-back-shadow);
 }
@@ -52,8 +53,8 @@ td {
     padding: 10px;
     border-collapse: separate;
     margin: 10px;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     font-size: 50px;
     color: var(--color-symbol);
     text-align: center;
@@ -93,11 +94,11 @@ td {
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.button {
+.game-over-button {
     position: relative;
 }
 
-button {
+.game-over-button button {
     cursor: pointer;
     position: absolute;
     left: 50%;
@@ -105,20 +106,44 @@ button {
     transform: translate(-50%, -50%);
     font-size: 1.3em;
     font-weight: bold;
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 10px;
+    padding: 15px;
     border-radius: 10px;
     background: var(--color-back-shadow);
 }
 
-button:hover {
+.game-over-button button:hover {
     box-shadow: 0 0 8px 0 var(--color-back-shadow);
 }
 
-button:active {
+.game-over-button button:active {
     box-shadow: inset 0 0 8px 0 black;
 }
 
 .win-cell {
     background-color: var(--color-back-shadow);
+}
+
+.game-scope {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.game-scope div {
+    margin: 10px;
+    padding: 5px 15px;
+    font-size: 1.1em;
+    color: var(--color-symbol);
+    text-shadow: 3px 3px 3px var(--color-back-shadow);
+}
+
+.game-scope-reset-button {
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1em;
+    background-color: var(--color-symbol);
+    text-shadow: 3px 3px 3px var(--color-back-shadow);
+
 }

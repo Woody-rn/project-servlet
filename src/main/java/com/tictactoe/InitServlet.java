@@ -16,9 +16,17 @@ public class InitServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession currentSession = req.getSession(true);
         Field field = new Field();
+        GameScope gameScope = (GameScope) currentSession.getAttribute("gameScope");
+        if(gameScope == null){
+            gameScope = new GameScope();
+            currentSession.setAttribute("gameScope", gameScope);
+        }
         List<Sign> data = field.getFieldData();
         currentSession.setAttribute("field", field);
         currentSession.setAttribute("data", data);
         getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
+
+
+
 }

@@ -14,8 +14,13 @@ import java.util.List;
 public class LogicServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession currentSession = req.getSession();
-        Field field = extractField(currentSession);
+        HttpSession currentSession = req.getSession(false);
+        if (currentSession.getAttribute("field") == null) {
+            getServletContext().getRequestDispatcher("/start").forward(req, resp);
+        }
+        Field field = extractAttribute(currentSession, "field");
+        GameScope gameScope = extractAttribute(currentSession, "gameScope");
+
         int index = getSelectedIndex(req);
         Sign currentSign = field.getField().get(index);
         if (Sign.EMPTY != currentSign) {
@@ -24,17 +29,18 @@ public class LogicServlet extends HttpServlet {
         }
 
         field.getField().put(index, Sign.CROSS);
-        if (checkWin(resp, currentSession, field)) {
+        if (checkWin(resp, currentSession, field, gameScope)) {
             return;
         }
 
         int emptyFieldIndex = field.botMove();
         if (emptyFieldIndex >= 0) {
             field.getField().put(emptyFieldIndex, Sign.NOUGHT);
-            if (checkWin(resp, currentSession, field)) {
+            if (checkWin(resp, currentSession, field, gameScope)) {
                 return;
             }
         } else {
+            gameScope.countDraw();
             currentSession.setAttribute("draw", true);
             List<Sign> data = field.getFieldData();
             currentSession.setAttribute("data", data);
@@ -54,18 +60,32 @@ public class LogicServlet extends HttpServlet {
         return isNumeric ? Integer.parseInt(click) : 0;
     }
 
-    private Field extractField(HttpSession session) {
-        Object fieldAttribute = session.getAttribute("field");
-        if (Field.class != fieldAttribute.getClass()) {
+    private <T> T extractAttribute(HttpSession session, String nameAttribute) {
+        Object attribute = session.getAttribute(nameAttribute);
+        Class<?> clazz = getaClass(nameAttribute);
+        if (clazz != attribute.getClass()) {
             session.invalidate();
             throw new RuntimeException("Session is broken, try one more time");
         }
-        return (Field) fieldAttribute;
+        return (T) attribute;
     }
 
-    private boolean checkWin(HttpServletResponse response, HttpSession session, Field field) {
+    private Class<?> getaClass(String nameAttribute) {
+        Class<?> clazz;
+        String firstChar = nameAttribute.substring(0, 1);
+        String className = "com.tictactoe." + nameAttribute.replaceFirst(firstChar, firstChar.toUpperCase());
+        try {
+            clazz = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return clazz;
+    }
+
+    private boolean checkWin(HttpServletResponse response, HttpSession session, Field field, GameScope gameScope) {
         Sign winner = field.checkWin();
         if (Sign.CROSS == winner || Sign.NOUGHT == winner) {
+            gameScope.countScope(winner);
             List<Sign> data = field.getFieldData();
             List<Integer> listIndexWinCell = field.getListIndexWinCell();
             session.setAttribute("winner", winner);
