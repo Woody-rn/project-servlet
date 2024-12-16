@@ -114,6 +114,10 @@
         if (winCell.includes(Number(td.id))) {
             td.classList.add('win-cell');
         }
+        const winLength = 3;
+        if(winCell.length === winLength){
+            td.onclick = null;
+        }
     });
 
 
